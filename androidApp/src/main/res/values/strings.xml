@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="home">Home</string>
+
+
+    <string name="add_exoense">Add Expense</string>
+    <string name="enter_amount">Enter Amount</string>
+    <string name="add_notes">Add Notes</string>
+    <string name="selected_date">Selected Date</string>
+    <string name="select_category">Select Category</string>
+    <string name="save_expense">Save Expense</string>
+    <string name="update_expense">Update Expense</string>
+    <string name="update_successful">Update Successful</string>
+    <string name="start_tracking_expense">Start Tracking Your Expense</string>
+    <string name="add_category">Add Category</string>
+    <string name="alert">Alert</string>
+    <string name="ok">Ok</string>
+    <string name="delete_conformation">Please note that deleted data cannot be restored.</string>
+    <string name="cancel">Cancel</string>
+    <string name="reset">Reset</string>
+    <string name="select_date_range">Select date range</string>
+    <string name="add_category_hint">Enter Category Name</string>
+    <string name="empty_error">Field Must Not Empty</string>
+    <string name="group_by">Group By</string>
+    <string name="asc">Ascending</string>
+    <string name="desc">Descending</string>
+    <string name="total_spending">Total Spending</string>
+    <string name="total">Total</string>
+    <string name="Category">Category</string>
+    <string name="date">Date</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+</resources>
