@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:title="search"
+        android:id="@+id/search"
+        android:visible="true"
+        android:icon="@drawable/ic_search"
+        app:showAsAction="collapseActionView|ifRoom"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+    <item
+        android:title="group"
+        android:id="@+id/sort_by"
+        app:showAsAction="never"
+        android:enabled="true" />
+    <item
+        android:title="users"
+        android:id="@+id/manage_user"
+        android:visible="true"
+        app:showAsAction="never"
+        android:enabled="true"/>
+
+</menu>
