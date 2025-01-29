@@ -1,0 +1,10 @@
+<!-- $Id:  $ -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="12dp"
+    android:height="12dp"
+    android:viewportWidth="12"
+    android:viewportHeight="12">
+  <path
+      android:pathData="M10.0078,1.8077C10.3828,1.4023 11.0155,1.3777 11.4209,1.7527C11.8263,2.1278 11.8509,2.7605 11.4759,3.1659L5.0337,10.1293C4.5506,10.6514 3.7449,10.6369 3.2803,10.1107L0.5086,6.9716C0.143,6.5576 0.1823,5.9257 0.5963,5.5601C1.0103,5.1946 1.6423,5.2338 2.0078,5.6478L4.1795,8.1075L10.0078,1.8077Z"
+      android:fillColor="#88ca40"/>
+</vector>
