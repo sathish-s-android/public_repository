@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="sheet_view_column_name_text_color">#A0A0A0</color>
+
+    <color name="open_status_color">#408CFAD3</color>
+    <color name="in_progress_status_color">#4082C3FA</color>
+    <color name="to_be_tested_status_color">#40F6D48B</color>
+    <color name="cancelled_status_color">#40F8A982</color>
+    <color name="closed_status_color">#40F88F8C</color>
+    <color name="reopen_status_color">#40FA8DB1</color>
+</resources>

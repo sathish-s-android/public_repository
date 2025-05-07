@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">SheetViewTestApp</string>
+
+    <string name="title">Title</string>
+    <string name="status">Status</string>
+    <string name="date_icon_description">Date</string>
+
+    <string name="column_action2">Action 2</string>
+    <string name="column_action3">Action 3</string>
+    <string name="column_action4">Action 4</string>
+    <string name="column_action5">Action 5</string>
+
+    <string name="open_status">Open</string>
+    <string name="in_progress_status">In progress</string>
+    <string name="to_be_tested_status">To be tested</string>
+    <string name="cancelled_status">Cancelled</string>
+    <string name="closed_status">Closed</string>
+    <string name="reopen_status">Reopen</string>
+</resources>
