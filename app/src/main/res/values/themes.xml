@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.SheetViewTestApp" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- Base application theme. -->
+    <style name="Base.Theme.SheetViewTestApp" parent="Theme.Material3.DayNight">
+        <item name="android:statusBarColor">@color/top_bar_color</item>
+        <item name="android:windowLightStatusBar">@bool/light_status_bar</item>
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">false</item>
+        <item name="actionBarStyle">@style/CustomActionBar</item>
+    </style>
+
+    <style name="CustomActionBar" parent="Widget.MaterialComponents.ActionBar.Solid">
+        <item name="background">@color/top_bar_color</item>
+        <item name="titleTextStyle">@style/CustomActionBarTitleText</item>
+    </style>
+
+    <style name="CustomActionBarTitleText" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Theme.SheetViewTestApp" parent="Base.Theme.SheetViewTestApp">
+        <item name="colorPrimary">@color/primary_color</item>
+    </style>
 </resources>

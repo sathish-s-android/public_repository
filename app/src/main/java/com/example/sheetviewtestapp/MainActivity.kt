@@ -19,10 +19,12 @@ import com.zoho.aksheetview.common.communicator.model.SVInitialSetupData
 import com.zoho.aksheetview.common.communicator.model.SheetViewData
 import com.zoho.aksheetview.common.initializer.SheetViewBuilder
 import com.zoho.aksheetview.ui.base.intent.SheetViewIntent
+import com.zoho.aksheetview.ui.base.model.logic.entities.commonModel.LoadMoreType
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
     private lateinit var sheetViewInstance: SheetViewBuilder
+    private var isDataSet = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +33,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             SheetViewTestAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Box(modifier = Modifier.padding(innerPadding)) {
+                    Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
                         sheetViewInstance.InitializeSheetView(
                             svInitialSetupData = SVInitialSetupData(),
                             svCustomizationData = SVCustomizationData()
@@ -41,18 +43,21 @@ class MainActivity : ComponentActivity() {
             }
 
             LaunchedEffect(Unit) {
-                sheetViewInstance.handleSheetViewAction(SheetViewIntent.StartLoading)
-                delay(2000)
-                sheetViewInstance.handleSheetViewAction(
-                    SheetViewIntent.SetDataToSheetView(
-                        sheetViewData = SheetViewData(
-                            sheetViewRowList = CommonUtil.getSampleSheetViewRows(this@MainActivity.applicationContext),
-                            sheetViewColumnList = CommonUtil.getSampleSheetViewColumns(
-                                this@MainActivity.applicationContext
-                            )
+                if (isDataSet.not()) {
+                    sheetViewInstance.handleSheetViewAction(SheetViewIntent.StartLoading)
+                    delay(2000)
+                    sheetViewInstance.handleSheetViewAction(
+                        SheetViewIntent.SetDataToSheetView(
+                            sheetViewData = SheetViewData(
+                                sheetViewRowList = CommonUtil.getSampleSheetViewRows(this@MainActivity.applicationContext),
+                                sheetViewColumnList = CommonUtil.getSampleSheetViewColumns(
+                                    this@MainActivity.applicationContext
+                                )
+                            ), loadMoreType = LoadMoreType.LoadMoreCompleteOrError()
                         )
                     )
-                )
+                    isDataSet = true
+                }
             }
         }
     }
@@ -64,9 +69,17 @@ class MainActivity : ComponentActivity() {
                 return this@MainActivity
             }
         }, sheetViewAppCallback = object : SheetViewAppCallback {
-            override fun hideActionBar() {}
-            override fun onBackPressed() {}
-            override fun showActionBar() {}
+            override fun hideActionBar() {
+                this@MainActivity.actionBar?.hide()
+            }
+
+            override fun onBackPressed() {
+                this@MainActivity.onBackPressed()
+            }
+
+            override fun showActionBar() {
+                this@MainActivity.actionBar?.show()
+            }
         })
     }
 }

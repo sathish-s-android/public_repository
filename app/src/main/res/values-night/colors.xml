@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="primary_color">#08994A</color>
+    <color name="top_bar_color">#F00</color>
+
+    <color name="akl_color_primary">#08994A</color>
+    <color name="akl_color_selected">#133724</color>
+
     <color name="sheet_view_column_name_text_color">#A0A0A0</color>
 
     <color name="open_status_color">#408CFAD3</color>
