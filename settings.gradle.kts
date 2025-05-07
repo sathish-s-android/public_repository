@@ -17,6 +17,22 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven {
+            url = uri("https://build.zohocorp.com/zoho_android/")
+            credentials {
+                username = System.getProperty("org.gradle.zandroid.buildUser")
+                password = System.getProperty("org.gradle.zandroid.buildPassword")
+            }
+        }
+
+        maven {
+            url = uri("https://build.zohocorp.com/zoho_android/zohomobile_android/milestones/")
+            credentials {
+                username = System.getProperty("org.gradle.zandroid.buildUser")
+                password = System.getProperty("org.gradle.zandroid.buildPassword")
+            }
+        }
+
+        maven {
             url =
                 uri("https://build-new.zohocorp.com/zoho_android/aksheetview/milestones/aksheetview_latest_3/AKSHEETVIEW_1.0.0-alpha2/")
             credentials {

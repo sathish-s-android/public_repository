@@ -43,6 +43,7 @@ android {
 dependencies {
 
     implementation("com.zoho.mobile.components:ak-sheet-view:1.0.0")
+    implementation("accounts_android_ssoframework.milestones:master:ACCOUNTS_ANDROID_SSOFRAMEWORK_6.3.5")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
