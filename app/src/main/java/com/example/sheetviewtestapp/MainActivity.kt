@@ -5,11 +5,23 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelStoreOwner
 import com.example.sheetviewtestapp.ui.theme.SheetViewTestAppTheme
 import com.zoho.aksheetview.common.communicator.callbacks.SheetViewAppCallback
@@ -25,20 +37,33 @@ import kotlinx.coroutines.delay
 class MainActivity : ComponentActivity() {
     private lateinit var sheetViewInstance: SheetViewBuilder
     private var isDataSet = false
+    private val shouldShowTopBar = mutableStateOf(true)
 
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         initializeSheetViewBuilder()
         setContent {
             SheetViewTestAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
-                        sheetViewInstance.InitializeSheetView(
-                            svInitialSetupData = SVInitialSetupData(),
-                            svCustomizationData = SVCustomizationData()
-                        )
+                val needTopBar = remember(shouldShowTopBar.value) { shouldShowTopBar.value }
+                Scaffold(
+                    topBar = {
+                        if (needTopBar) {
+                            TopAppBar(
+                                colors = TopAppBarDefaults.topAppBarColors(
+                                    containerColor = colorResource(R.color.top_bar_color),
+                                    titleContentColor = colorResource(R.color.black),
+                                ), title = {
+                                    Text(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        text = stringResource(R.string.sheet_title)
+                                    )
+                                })
+                        }
                     }
+                ) { padding ->
+                    SheetViewContent(padding = if (needTopBar) padding else PaddingValues(0.dp))
                 }
             }
 
@@ -62,6 +87,20 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @Composable
+    fun SheetViewContent(padding: PaddingValues = PaddingValues(0.dp)) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            sheetViewInstance.InitializeSheetView(
+                svInitialSetupData = SVInitialSetupData(),
+                svCustomizationData = SVCustomizationData()
+            )
+        }
+    }
+
     private fun initializeSheetViewBuilder() {
         sheetViewInstance = SheetViewBuilder.initialize(sheetViewAppCommunicator = object :
             SheetViewAppCommunicator {
@@ -70,7 +109,7 @@ class MainActivity : ComponentActivity() {
             }
         }, sheetViewAppCallback = object : SheetViewAppCallback {
             override fun hideActionBar() {
-                this@MainActivity.actionBar?.hide()
+                shouldShowTopBar.value = false
             }
 
             override fun onBackPressed() {
@@ -78,7 +117,7 @@ class MainActivity : ComponentActivity() {
             }
 
             override fun showActionBar() {
-                this@MainActivity.actionBar?.show()
+                shouldShowTopBar.value = true
             }
         })
     }
