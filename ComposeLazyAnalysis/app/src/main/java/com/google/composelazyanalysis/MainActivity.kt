@@ -91,244 +91,27 @@ fun Greeting(modifier: Modifier = Modifier,state: State<List<RVData>>) {
 
 @Composable
 fun Item(rVData:RVData){
-    Row(Modifier.background(c1).wrapContentHeight().padding(5.dp)){
-        Image(
-            painterResource(rVData.goku),
-            modifier = Modifier
-                .height(100.dp)
-                .width(100.dp),
-            contentDescription = ""
-        )
-        Column {
-            Row(modifier = Modifier.wrapContentHeight()) {
-                    Text(
-                        text = rVData.name,
-                        modifier = Modifier
-                            .width(150.dp)
-                            .wrapContentHeight().align(alignment = Alignment.CenterVertically),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-
-                Column(modifier = Modifier.weight(1f)) {
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        Image(
-                            painterResource(rVData.drawable1),
-                            modifier = Modifier.weight(1f),
-                            contentDescription = ""
-                        )
-                        Image(
-                            painterResource(rVData.drawable2),
-                            modifier = Modifier.weight(1f),
-                            contentDescription = ""
-                        )
-                    }
-
-                    Text(
-                        text = rVData.neutralContent,
-                        modifier = Modifier
-                            .width(150.dp)
-                            .wrapContentHeight(align = Alignment.CenterVertically),
-                        textAlign = TextAlign.Center,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-
-                }
-
-            }
-
-            Row(modifier = Modifier.wrapContentHeight()) {
-                Button(onClick = {},modifier = Modifier
-                    .height(50.dp)
-                    .width(140.dp)){
-                    Text(
-                        text = rVData.buttonContent,
-                        modifier = Modifier
-                            .width(150.dp)
-                            .wrapContentHeight(align = Alignment.CenterVertically),
-                        textAlign = TextAlign.Center,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-                Text(
-                    text = rVData.dummyContent,
-                    modifier = Modifier
-                        .width(150.dp)
-                        .weight(1F)
-                        .wrapContentHeight().align(alignment = Alignment.CenterVertically),
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-
-        }
-    }
+    CoreItem(rVData, c1)
 }
 
 @Composable
 fun Item1(rVData:RVData){
-    Row(Modifier.background(c2).wrapContentHeight().padding(5.dp)){
-        Image(
-            painterResource(rVData.goku),
-            modifier = Modifier
-                .height(100.dp)
-                .width(100.dp),
-            contentDescription = ""
-        )
-        Column {
-            Row(modifier = Modifier.wrapContentHeight()) {
-                    Text(
-                        text = rVData.name,
-                        modifier = Modifier
-                            .width(150.dp)
-                            .wrapContentHeight().align(alignment = Alignment.CenterVertically),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-
-                Column(modifier = Modifier.weight(1f)) {
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        Image(
-                            painterResource(rVData.drawable1),
-                            modifier = Modifier.weight(1f),
-                            contentDescription = ""
-                        )
-                        Image(
-                            painterResource(rVData.drawable2),
-                            modifier = Modifier.weight(1f),
-                            contentDescription = ""
-                        )
-                    }
-
-                    Text(
-                        text = rVData.neutralContent,
-                        modifier = Modifier
-                            .width(150.dp)
-                            .wrapContentHeight(align = Alignment.CenterVertically),
-                        textAlign = TextAlign.Center,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-
-                }
-
-            }
-
-            Row(modifier = Modifier.wrapContentHeight()) {
-                Button(onClick = {},modifier = Modifier
-                    .height(50.dp)
-                    .width(140.dp)){
-                    Text(
-                        text = rVData.buttonContent,
-                        modifier = Modifier
-                            .width(150.dp)
-                            .wrapContentHeight(align = Alignment.CenterVertically),
-                        textAlign = TextAlign.Center,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-                Text(
-                    text = rVData.dummyContent,
-                    modifier = Modifier
-                        .width(150.dp)
-                        .weight(1F)
-                        .wrapContentHeight().align(alignment = Alignment.CenterVertically),
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-
-        }
-    }
+    CoreItem(rVData, c2)
 }
 
 @Composable
 fun Item2(rVData:RVData){
-    Row(Modifier.background(c3).wrapContentHeight().padding(5.dp)){
-        Image(
-            painterResource(rVData.goku),
-            modifier = Modifier
-                .height(100.dp)
-                .width(100.dp),
-            contentDescription = ""
-        )
-        Column {
-            Row(modifier = Modifier.wrapContentHeight()) {
-                    Text(
-                        text = rVData.name,
-                        modifier = Modifier
-                            .width(150.dp)
-                            .wrapContentHeight().align(alignment = Alignment.CenterVertically),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-
-                Column(modifier = Modifier.weight(1f)) {
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        Image(
-                            painterResource(rVData.drawable1),
-                            modifier = Modifier.weight(1f),
-                            contentDescription = ""
-                        )
-                        Image(
-                            painterResource(rVData.drawable2),
-                            modifier = Modifier.weight(1f),
-                            contentDescription = ""
-                        )
-                    }
-
-                    Text(
-                        text = rVData.neutralContent,
-                        modifier = Modifier
-                            .width(150.dp)
-                            .wrapContentHeight(align = Alignment.CenterVertically),
-                        textAlign = TextAlign.Center,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-
-                }
-
-            }
-
-            Row(modifier = Modifier.wrapContentHeight()) {
-                Button(onClick = {},modifier = Modifier
-                    .height(50.dp)
-                    .width(140.dp)){
-                    Text(
-                        text = rVData.buttonContent,
-                        modifier = Modifier
-                            .width(150.dp)
-                            .wrapContentHeight(align = Alignment.CenterVertically),
-                        textAlign = TextAlign.Center,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-                Text(
-                    text = rVData.dummyContent,
-                    modifier = Modifier
-                        .width(150.dp)
-                        .weight(1F)
-                        .wrapContentHeight().align(alignment = Alignment.CenterVertically),
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-
-        }
-    }
+    CoreItem(rVData, c3)
 }
 
 @Composable
 fun Item3(rVData:RVData){
-    Row(Modifier.background(c4).wrapContentHeight().padding(5.dp)){
+    CoreItem(rVData, c4)
+}
+
+@Composable
+fun CoreItem(rVData:RVData,color:Color){
+    Row(Modifier.background(color).wrapContentHeight().padding(5.dp)){
         Image(
             painterResource(rVData.goku),
             modifier = Modifier
@@ -338,14 +121,14 @@ fun Item3(rVData:RVData){
         )
         Column {
             Row(modifier = Modifier.wrapContentHeight()) {
-                    Text(
-                        text = rVData.name,
-                        modifier = Modifier
-                            .width(150.dp)
-                            .wrapContentHeight().align(alignment = Alignment.CenterVertically),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                Text(
+                    text = rVData.name,
+                    modifier = Modifier
+                        .width(150.dp)
+                        .wrapContentHeight().align(alignment = Alignment.CenterVertically),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
 
                 Column(modifier = Modifier.weight(1f)) {
                     Row(modifier = Modifier.fillMaxWidth()) {

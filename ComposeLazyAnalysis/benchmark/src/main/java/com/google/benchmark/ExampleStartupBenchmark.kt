@@ -35,11 +35,14 @@ class ExampleStartupBenchmark {
     @get:Rule
     val benchmarkRule = MacrobenchmarkRule()
 
+    @OptIn(ExperimentalMetricApi::class)
     @Test
     fun startup() = benchmarkRule.measureRepeated(
         packageName = TARGET_PACKAGE,
-        metrics = listOf(StartupTimingMetric()),
-        iterations = 5,
+        metrics = listOf(StartupTimingMetric(),
+            FrameTimingMetric(),
+            MemoryUsageMetric(mode = MemoryUsageMetric.Mode.Max)),
+        iterations = 10,
         startupMode = StartupMode.COLD
     ) {
         pressHome()
