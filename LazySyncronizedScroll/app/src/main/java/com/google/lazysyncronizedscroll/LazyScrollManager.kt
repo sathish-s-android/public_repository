@@ -18,7 +18,7 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 @Stable
-class LazyScrollManager<T>(private val totalHeight: Dp, private val individualHeight: Dp, private val threshold:Int = 4):RecycleLazyState<T> {
+class LazyScrollManager<T>(private val totalHeight: Dp, private val individualHeight: Dp):RecycleLazyState<T> {
 
     private val currentStateKey:AtomicInteger = AtomicInteger(0)
     private val stateStack = mutableListOf<LazyListState>()
@@ -26,21 +26,26 @@ class LazyScrollManager<T>(private val totalHeight: Dp, private val individualHe
     private val canScrollMap = mutableListOf<MutableState<Boolean>>()
     private val canScrollKeyPair = mutableMapOf<T,MutableState<Boolean>>()
     private val totalCount by lazy {
-        ((totalHeight/individualHeight)+threshold).toInt()
+        val total = (totalHeight/individualHeight).toInt()
+        (total + (total/2))
     }
     private var currentIndex = 0
     private var currentItemOffset = 0
-
+    private var isSetted = false
     private var currentScrollable by EternalNull<Int>(150,{key->
-        canScrollMap.forEachIndexed { index, mutableState ->
-            if (index != key){
-                mutableState.value = false
+        if (!isSetted){
+            canScrollMap.forEachIndexed { index, mutableState ->
+                if (index != key){
+                    mutableState.value = false
+                }
             }
+            isSetted = true
         }
     }){
         canScrollMap.map {mutableState->
             mutableState.value = true
         }
+        isSetted = false
     }
 
     override fun getState(key:T):LazyListState {

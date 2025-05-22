@@ -56,7 +56,7 @@ fun Greeting(modifier: Modifier, data: List<RowData>) {
     val screenHeight = configuration.screenHeightDp.dp
 
     val scrollManager = remember {
-        LazyScrollManager<Int>(screenHeight,50.dp,5)
+        LazyScrollManager<Int>(screenHeight,50.dp)
     }
     Box {
         LazyColumn(modifier = modifier
