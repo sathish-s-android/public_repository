@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -84,14 +85,15 @@ fun Greeting(modifier: Modifier, data: List<RowData>) {
 
                  */
 
-                MyLazyRow(scrollManager.getState(data.key))
+                //don't reorder the parameters order
+                MyLazyRow(scrollManager.getState(data.key),scrollManager.getCanScroll(key = data.key))
             }
         }
     }
 }
 
 @Composable
-fun MyLazyRow(state: LazyListState) {
+fun MyLazyRow(state: LazyListState,canScroll: State<Boolean>) {
 
     /*
     val state = if (map[index] == null) {
@@ -118,7 +120,7 @@ fun MyLazyRow(state: LazyListState) {
 //        .semantics { contentDescription = "lazyRow_$index" }
         .wrapContentHeight(),
         state = state,
-//        userScrollEnabled = userScrollEnabledMap[index]?.value ?: true
+        userScrollEnabled = canScroll.value
     ) {
         items(1000) {
             Item(it)

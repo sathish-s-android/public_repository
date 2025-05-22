@@ -2,6 +2,10 @@ package com.google.lazysyncronizedscroll
 
 
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.unit.Dp
 import kotlinx.coroutines.CoroutineScope
@@ -13,28 +17,48 @@ import java.util.concurrent.atomic.AtomicInteger
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
+@Stable
 class LazyScrollManager<T>(private val totalHeight: Dp, private val individualHeight: Dp, private val threshold:Int = 4):RecycleLazyState<T> {
 
-    private var currentScrollable by EternalNull<Int>(150)
     private val currentStateKey:AtomicInteger = AtomicInteger(0)
     private val stateStack = mutableListOf<LazyListState>()
     private val keyValuePair = mutableMapOf<T,LazyListState>()
+    private val canScrollMap = mutableListOf<MutableState<Boolean>>()
+    private val canScrollKeyPair = mutableMapOf<T,MutableState<Boolean>>()
     private val totalCount by lazy {
         ((totalHeight/individualHeight)+threshold).toInt()
     }
     private var currentIndex = 0
     private var currentItemOffset = 0
 
+    private var currentScrollable by EternalNull<Int>(150,{key->
+        canScrollMap.forEachIndexed { index, mutableState ->
+            if (index != key){
+                mutableState.value = false
+            }
+        }
+    }){
+        canScrollMap.map {mutableState->
+            mutableState.value = true
+        }
+    }
+
     override fun getState(key:T):LazyListState {
 
         if(keyValuePair[key] == null){
             val currentValue = currentStateKey.get()
             val value = getLazyState(currentValue)
+            val canScroll = getCanScrollState(currentValue)
             setNextIndex(currentValue)
             keyValuePair[key] = value
+            canScrollKeyPair[key] = canScroll
         }
-
         return keyValuePair[key]!!
+    }
+
+
+    override fun getCanScroll(key: T): State<Boolean> {
+        return canScrollKeyPair[key]?: mutableStateOf(true)
     }
 
     private fun getLazyState(currentValue:Int):LazyListState{
@@ -48,6 +72,17 @@ class LazyScrollManager<T>(private val totalHeight: Dp, private val individualHe
            }
            stateStack[currentValue]
        }
+    }
+
+    private fun getCanScrollState(currentValue:Int):MutableState<Boolean>{
+        return if (currentValue <= canScrollMap.size-1){
+            canScrollMap[currentValue]
+        }else{
+            if(currentValue <= totalCount){
+                canScrollMap.add(currentValue,mutableStateOf(true))
+            }
+            canScrollMap[currentValue]
+        }
     }
 
     private fun setNextIndex(currentValue:Int){
@@ -66,7 +101,6 @@ class LazyScrollManager<T>(private val totalHeight: Dp, private val individualHe
             }.collect {
 
                 if (currentScrollable == null || currentScrollable == key) {
-
                     currentScrollable = key
                     currentIndex = lazyListState.firstVisibleItemIndex
                     currentItemOffset = lazyListState.firstVisibleItemScrollOffset
@@ -88,11 +122,13 @@ class LazyScrollManager<T>(private val totalHeight: Dp, private val individualHe
 
 interface RecycleLazyState<T>{
     fun getState(key:T):LazyListState
+    fun getCanScroll(key:T): State<Boolean>
 }
-
 
 class EternalNull<T>(
     private val time: Long,
+    private val canScroll:(T?)->Unit,
+    private val resetScroll:()->Unit
 ) : ReadWriteProperty<Any?, T?> {
 
     private var value: T? = null
@@ -106,8 +142,12 @@ class EternalNull<T>(
         value = newValue
         job?.cancel()
         job = CoroutineScope(Dispatchers.IO).launch {
+            canScroll(value)
             delay(time)
             value = null
+            resetScroll()
         }
     }
 }
+
+
