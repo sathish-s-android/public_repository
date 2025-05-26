@@ -55,3 +55,4 @@ rootProject.name = "SheetViewTestApp"
 include(":app")
 //include(":aksheetview")
 //include(":test")
+include(":benchmark")
