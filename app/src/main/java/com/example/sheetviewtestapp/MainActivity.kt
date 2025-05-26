@@ -3,12 +3,24 @@ package com.example.sheetviewtestapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+//import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -16,109 +28,136 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelStoreOwner
 import com.example.sheetviewtestapp.ui.theme.SheetViewTestAppTheme
-import com.zoho.aksheetview.common.communicator.callbacks.SheetViewAppCallback
-import com.zoho.aksheetview.common.communicator.callbacks.SheetViewAppCommunicator
-import com.zoho.aksheetview.common.communicator.model.SVCustomizationData
-import com.zoho.aksheetview.common.communicator.model.SVInitialSetupData
-import com.zoho.aksheetview.common.communicator.model.SheetViewData
-import com.zoho.aksheetview.common.initializer.SheetViewBuilder
-import com.zoho.aksheetview.ui.base.intent.SheetViewIntent
-import com.zoho.aksheetview.ui.base.model.logic.entities.commonModel.LoadMoreType
-import kotlinx.coroutines.delay
+
 
 class MainActivity : ComponentActivity() {
-    private lateinit var sheetViewInstance: SheetViewBuilder
-    private var isDataSet = false
-    private val shouldShowTopBar = mutableStateOf(true)
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        initializeSheetViewBuilder()
         setContent {
+            val data = getData()
             SheetViewTestAppTheme {
-                val needTopBar = remember(shouldShowTopBar.value) { shouldShowTopBar.value }
-                Scaffold(
-                    topBar = {
-                        if (needTopBar) {
-                            TopAppBar(
-                                colors = TopAppBarDefaults.topAppBarColors(
-                                    containerColor = colorResource(R.color.top_bar_color),
-                                    titleContentColor = colorResource(R.color.black),
-                                ), title = {
-                                    Text(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        text = stringResource(R.string.sheet_title)
-                                    )
-                                })
-                        }
-                    }
-                ) { padding ->
-                    SheetViewContent(padding = if (needTopBar) padding else PaddingValues(0.dp))
-                }
-            }
-
-            LaunchedEffect(Unit) {
-                if (isDataSet.not()) {
-                    sheetViewInstance.handleSheetViewAction(SheetViewIntent.StartLoading)
-                    delay(2000)
-                    sheetViewInstance.handleSheetViewAction(
-                        SheetViewIntent.SetDataToSheetView(
-                            sheetViewData = SheetViewData(
-                                sheetViewRowList = CommonUtil.getSampleSheetViewRows(this@MainActivity.applicationContext),
-                                sheetViewColumnList = CommonUtil.getSampleSheetViewColumns(
-                                    this@MainActivity.applicationContext
-                                )
-                            ), loadMoreType = LoadMoreType.LoadMoreCompleteOrError()
-                        )
+                Scaffold{ padding ->
+                    Greeting(
+                        modifier = Modifier.padding(padding), data
                     )
-                    isDataSet = true
                 }
             }
         }
     }
+}
 
-    @Composable
-    fun SheetViewContent(padding: PaddingValues = PaddingValues(0.dp)) {
+@Composable
+fun Greeting(modifier: Modifier, data: List<ColumnData>) {
+    val scrollState = rememberLazyListState()
+
+    val dummyState = remember {
+        derivedStateOf {
+            scrollState.firstVisibleItemScrollOffset
+        }
+    }
+    Box {
+        LazyColumn(
+            modifier = modifier
+                .fillMaxHeight()
+                .semantics { contentDescription = "MainScrollList" }
+                .padding(top = 20.dp)) {
+
+
+
+            items(data, key = {
+                it.key
+            }) { data ->
+                val list= getRowDataList()
+                MyLazyRow(state = scrollState, dummyState, list)
+            }
+        }
+    }
+}
+
+
+@Composable
+fun MyLazyRow(state: LazyListState, dummyState: State<Int>, list: MutableList<RowData>) {
+
+    Box {
+        val myList = remember(list) {
+            list.filter { it.key % 2 == 0 }
+        }
         Box(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
+                .width(dummyState.value.dp)
+                .fillMaxHeight()
+                .alpha(0F)
+        )
+        LazyRow(
+            Modifier,
+            state = state,
         ) {
-            sheetViewInstance.InitializeSheetView(
-                svInitialSetupData = SVInitialSetupData(),
-                svCustomizationData = SVCustomizationData()
-            )
+
+            itemsIndexed(myList) { index, item ->
+                val modifier = Modifier
+                    .clickable {}
+                Item(item.key, modifier)
+            }
         }
     }
 
-    private fun initializeSheetViewBuilder() {
-        sheetViewInstance = SheetViewBuilder.initialize(sheetViewAppCommunicator = object :
-            SheetViewAppCommunicator {
-            override fun getViewModelStoreOwner(): ViewModelStoreOwner {
-                return this@MainActivity
-            }
-        }, sheetViewAppCallback = object : SheetViewAppCallback {
-            override fun hideActionBar() {
-                shouldShowTopBar.value = false
-            }
+}
 
-            override fun onBackPressed() {
-                this@MainActivity.onBackPressed()
-            }
+@Composable
+fun Item(no: Int, modifier: Modifier) {
 
-            override fun showActionBar() {
-                shouldShowTopBar.value = true
-            }
-        })
+    Row(modifier.wrapContentHeight()) {
+        Image(
+            painter = painterResource(R.drawable.ic_launcher_foreground),
+            contentDescription = ""
+        )
+        Text(
+            text = "text $no",
+            modifier = Modifier
+                .clickable {}
+                .padding(start = 10.dp, end = 10.dp))
+
     }
+
+}
+
+data class RowData(val item: String, val key: Int)
+data class ColumnData( val key: Int, val items:List<RowData>)
+
+
+fun getData(): List<ColumnData> {
+    val parentList = mutableListOf<ColumnData>()
+    for (j in 0..1000){
+
+        parentList.add(ColumnData(j,getRowDataList()))
+    }
+
+    return parentList
+}
+
+fun getRowDataList():MutableList<RowData>{
+    val mutableList = mutableListOf<RowData>()
+    for (i in 0..1000) {
+        mutableList.add(
+            RowData("text $i", i)
+        )
+    }
+
+    return mutableList
 }

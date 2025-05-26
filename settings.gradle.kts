@@ -16,21 +16,21 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven {
-            url = uri("https://build.zohocorp.com/zoho_android/")
-            credentials {
-                username = System.getProperty("org.gradle.zandroid.buildUser")
-                password = System.getProperty("org.gradle.zandroid.buildPassword")
-            }
-        }
-
-        maven {
-            url = uri("https://build.zohocorp.com/zoho_android/zohomobile_android/milestones/")
-            credentials {
-                username = System.getProperty("org.gradle.zandroid.buildUser")
-                password = System.getProperty("org.gradle.zandroid.buildPassword")
-            }
-        }
+//        maven {
+//            url = uri("https://build.zohocorp.com/zoho_android/")
+//            credentials {
+//                username = System.getProperty("org.gradle.zandroid.buildUser")
+//                password = System.getProperty("org.gradle.zandroid.buildPassword")
+//            }
+//        }
+//
+//        maven {
+//            url = uri("https://build.zohocorp.com/zoho_android/zohomobile_android/milestones/")
+//            credentials {
+//                username = System.getProperty("org.gradle.zandroid.buildUser")
+//                password = System.getProperty("org.gradle.zandroid.buildPassword")
+//            }
+//        }
 
         maven {
             url =
@@ -53,4 +53,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "SheetViewTestApp"
 include(":app")
- 
+//include(":aksheetview")
+//include(":test")
