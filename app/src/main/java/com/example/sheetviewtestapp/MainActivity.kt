@@ -1,17 +1,14 @@
 package com.example.sheetviewtestapp
 
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-//import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -24,29 +21,21 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelStoreOwner
 import com.example.sheetviewtestapp.ui.theme.SheetViewTestAppTheme
 
 
 class MainActivity : ComponentActivity() {
 
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -83,8 +72,7 @@ fun Greeting(modifier: Modifier, data: List<ColumnData>) {
             items(data, key = {
                 it.key
             }) { data ->
-                val list= getRowDataList()
-                MyLazyRow(state = scrollState, dummyState, list)
+                MyLazyRow(state = scrollState, dummyState, data.items)
             }
         }
     }
@@ -92,7 +80,7 @@ fun Greeting(modifier: Modifier, data: List<ColumnData>) {
 
 
 @Composable
-fun MyLazyRow(state: LazyListState, dummyState: State<Int>, list: MutableList<RowData>) {
+fun MyLazyRow(state: LazyListState, dummyState: State<Int>, list: List<RowData>) {
 
     Box {
         val myList = remember(list) {
@@ -158,6 +146,5 @@ fun getRowDataList():MutableList<RowData>{
             RowData("text $i", i)
         )
     }
-
     return mutableList
 }
