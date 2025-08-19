@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+//    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
@@ -75,6 +76,9 @@ dependencies {
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+
+
+    implementation("androidx.compose.foundation:foundation:1.9.0-alpha03")
 
 
     testImplementation("junit:junit:4.13.2")
