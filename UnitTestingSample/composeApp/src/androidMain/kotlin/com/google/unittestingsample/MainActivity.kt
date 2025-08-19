@@ -1,6 +1,7 @@
 package com.google.unittestingsample
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -16,7 +17,16 @@ class MainActivity : ComponentActivity() {
             App()
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        window?.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE
+        )
+    }
 }
+
 
 @Preview
 @Composable
