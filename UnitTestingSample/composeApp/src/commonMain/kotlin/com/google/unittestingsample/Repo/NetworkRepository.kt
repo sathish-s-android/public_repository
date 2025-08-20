@@ -6,9 +6,6 @@ class NetworkRepository:NetWorkDataSource {
     }
 }
 
-
-
-
 interface NetWorkDataSource {
     suspend fun getData(): String
 }

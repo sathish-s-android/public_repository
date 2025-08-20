@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
 
     id("org.jetbrains.kotlinx.kover") version "0.8.0"
+    id("dev.mokkery") version "2.9.0"
 }
 
 kover{
