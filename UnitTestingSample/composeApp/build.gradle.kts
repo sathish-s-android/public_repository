@@ -60,6 +60,18 @@ kotlin {
             implementation(libs.kotlin.test)
             implementation(libs.kotlinx.coroutines.test)//for testing the coroutines
         }
+
+        androidUnitTest.dependencies {
+            implementation(kotlin("test"))
+            implementation("junit:junit:4.13.2")
+            implementation("io.mockk:mockk:1.13.10")
+            implementation("org.robolectric:robolectric:4.12.1")
+            implementation("androidx.test:core:1.5.0")
+            implementation("androidx.test.ext:junit-ktx:1.1.5")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.2")
+            implementation("org.reflections:reflections:0.10.2")
+        }
     }
 }
 
